@@ -14,6 +14,10 @@ app.json.compact = False
 migrate = Migrate(app, db)
 db.init_app(app)
 
+# Create tables if they don't exist
+with app.app_context():
+    db.create_all()
+
 
 @app.route('/')
 def index():
@@ -26,7 +30,7 @@ def get_earthquake(id):
     if quake:
         return make_response(quake.to_dict(), 200)
     else:
-        return make_response({"message": f"Earthquake {id} not found."}, 404)
+        return make_response({"message": "Earthquake {} not found.".format(id)}, 404)
 
 @app.route('/earthquakes/magnitude/<float:magnitude>', methods=['GET'])
 def get_earthquakes_by_magnitude(magnitude):
