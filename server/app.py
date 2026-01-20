@@ -17,6 +17,15 @@ db.init_app(app)
 # Create tables if they don't exist
 with app.app_context():
     db.create_all()
+    
+    # Seed data if table is empty
+    if Earthquake.query.count() == 0:
+        db.session.add(Earthquake(magnitude=9.5, location="Chile", year=1960))
+        db.session.add(Earthquake(magnitude=9.2, location="Alaska", year=1964))
+        db.session.add(Earthquake(magnitude=8.6, location="Alaska", year=1946))
+        db.session.add(Earthquake(magnitude=8.5, location="Banda Sea", year=1934))
+        db.session.add(Earthquake(magnitude=8.4, location="Chile", year=1922))
+        db.session.commit()
 
 
 @app.route('/')
